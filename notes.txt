@@ -1,0 +1,2 @@
+- Guía de BEM para CSS | Cohete Falcon 9 de SpaceX: https://platzi.com/blog/bem/
+- TMDB (API): https://developer.themoviedb.org/docs/getting-started

@@ -1,0 +1,20 @@
+{
+  "name": "api-rest-javascript-platzi",
+  "version": "1.0.0",
+  "description": "API REST with Javascript's course",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Juxn89/api-rest-javascript-platzi.git"
+  },
+  "keywords": [],
+  "author": "Juan Gómez << gb.jc@outlook.com >>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Juxn89/api-rest-javascript-platzi/issues"
+  },
+  "homepage": "https://github.com/Juxn89/api-rest-javascript-platzi#readme"
+}
