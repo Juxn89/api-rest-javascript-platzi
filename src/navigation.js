@@ -25,6 +25,9 @@ function navigator() {
 		categoriesPage();
 	else
 		homePage();
+
+	document.body.scrollTop = 0;
+	document.documentElement.scrollTop = 0;
 }
 
 function homePage() {
@@ -58,6 +61,13 @@ function categoriesPage() {
 	categoriesPreviewSection.classList.add('inactive')
 	genericSection.classList.remove('inactive')
 	movieDetailSection.classList.add('inactive')
+
+	const [_, categoryData] = location.hash.split('=')
+	const [genreId, categoryName] = categoryData.split('-')
+
+	headerCategoryTitle.innerHTML = categoryName
+
+	getMoviesByCategory(genreId)
 }
 
 function movieDetailsPage() {
@@ -77,9 +87,9 @@ function movieDetailsPage() {
 
 function searchResultsPage() { 
 	headerSection.classList.add('header-container--long')
-	// headerSection.style.background = ''
+	headerSection.style.background = ''
 	arrowBtn.classList.remove('inactive')
-	arrowBtn.classList.add('header-arrow--white')
+	arrowBtn.classList.remove('header-arrow--white')
 	headerTitle.classList.add('inactive')
 	headerCategoryTitle.classList.add('inactive')
 	searchForm.classList.remove('inactive')
@@ -88,6 +98,11 @@ function searchResultsPage() {
 	categoriesPreviewSection.classList.add('inactive')
 	genericSection.classList.add('inactive')
 	movieDetailSection.classList.remove('inactive')
+
+	const [_, query] = location.hash.split('=')
+	const searchQuery = query.replace('-', ' ')
+
+	getMoviesBySearch(searchQuery)
 }
 
 function trendsPage() { 
