@@ -1,5 +1,5 @@
 const BASE_URL = 'https://api.themoviedb.org/3/'
-const BASE_URL_300 = 'https://image.tmdb.org/t/p/w300'
+const BASE_URL_IMAGE = 'https://image.tmdb.org/t/p'
 
 const api = axios.create({
 	baseURL: 'https://api.themoviedb.org/3/',
@@ -16,15 +16,39 @@ function createMovies(movies, container) {
 	movies.forEach(movie => {
 		const movieContainer = document.createElement('div')
 		movieContainer.classList.add('movie-container')
+		movieContainer.addEventListener('click', () => {
+			location.hash = `#movie=${movie.id}`
+		})
 
 		const movieImg = document.createElement('img')
 		movieImg.classList.add('movie-img')
 		movieImg.setAttribute('alt', movie.title)
-		movieImg.setAttribute('src', `${BASE_URL_300}${movie.poster_path}`)
+		movieImg.setAttribute('src', `${BASE_URL_IMAGE}/w300${movie.poster_path}`)
 
 		movieContainer.appendChild(movieImg)
 		container.appendChild(movieContainer)
 	})
+}
+
+function createCategories(categories, container) {
+  container.innerHTML = "";
+
+  categories.forEach(category => {  
+    const categoryContainer = document.createElement('div');
+    categoryContainer.classList.add('category-container');
+
+    const categoryTitle = document.createElement('h3');
+    categoryTitle.classList.add('category-title');
+    categoryTitle.setAttribute('id', 'id' + category.id);
+    categoryTitle.addEventListener('click', () => {
+      location.hash = `#category=${category.id}-${category.name}`;
+    });
+    const categoryTitleText = document.createTextNode(category.name);
+
+    categoryTitle.appendChild(categoryTitleText);
+    categoryContainer.appendChild(categoryTitle);
+    container.appendChild(categoryContainer);
+  });
 }
 
 // Call to API
@@ -55,4 +79,37 @@ async function getMoviesBySearch(query) {
 	const movies = await data.results
 
 	createMovies(movies, genericSection)
+}
+
+async function getTrendingMovies() {
+	const { data } = await api.get('trending/movie/day')
+	const movies = await data.results
+
+	createMovies(movies, genericSection)
+}
+
+async function getMovieById(id) {
+	const { data } = await api.get(`movie/${id}`)
+	const movie = await data
+
+	headerSection.style.background = `
+		linear-gradient(
+			180deg, 
+			rgba(0, 0, 0, 0.35) 19.27%, 
+			rgba(0, 0, 0, 0) 29.17%
+		),
+		url(${BASE_URL_IMAGE}/w500${movie.poster_path})`
+	movieDetailTitle.textContent = movie.title
+	movieDetailDescription.textContent = movie.overview
+	movieDetailScore.textContent = movie.vote_average
+
+	createCategories(movie.genres, movieDetailCategoriesList)
+	getRelatedMoviesById(movie.id)
+}
+
+async function getRelatedMoviesById(movieId) {
+	const { data } = await api.get(`movie/${movieId}/recommendations`)
+	const movies = await data.results
+
+	createMovies(movies, relatedMoviesContainer)
 }
